@@ -37,7 +37,7 @@ export default defineConfig({
     timeout: 30000
   },
   use: {
-    headless: false,
+    headless: true,
     screenshot: 'on',
     video: 'retain-on-failure',
     trace: 'off',
