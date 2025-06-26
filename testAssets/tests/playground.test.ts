@@ -22,6 +22,7 @@ test.describe("Test the Playground web application", async () => {
     await test.step("Launch the website and verify that home page is displayed", async () => {
       await common.launchUrl(env.baseUrl);
       await expect(page).toHaveTitle(playgroundData.titles.homePage);
+      console.log("Hellooo");
     });
 
     await test.step("Login to the e-commerce by clicking on profile icon dropdown on top right side of the screen", async () => {
