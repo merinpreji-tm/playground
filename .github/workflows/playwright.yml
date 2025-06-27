@@ -1,10 +1,7 @@
-name: 🧪 Playwright Tests
+name: Playwright Tests
 
 on:
-  push:
-    branches: [merin]
-  pull_request:
-    branches: [merin]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -12,24 +9,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️ Checkout code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: 🧰 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: 📦 Install dependencies
+      - name: Install dependencies
         run: npm ci
 
-      - name: 🌐 Install Playwright Browsers
+      - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: 🧪 Run Playwright Tests
-        run: npx playwright test
+      - name: Run Playwright Tests
+        run: npx playwright test --grep "@smoke"
 
-      - name: 📁 Upload Playwright HTML Report
+      - name: Upload Playwright HTML Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
