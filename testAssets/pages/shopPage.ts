@@ -7,28 +7,29 @@ class ShopPage extends Common {
     filterOption: (value: any) => any;
     product: Locator;
     productTitle: Locator;
+    productPrice: Locator;
     productViewIcon: Locator;
     productsDiv: Locator;
 
-
-    constructor(public page: Page){
+    constructor(public page: Page) {
         super(page);
         this.menu = this.page.locator(`//span[text()="shop"]`);
         this.filter = (value) => this.page.locator(`//span[contains(text(),"${value}")]`);
         this.filterOption = (option) => this.page.locator(`//label[text()="${option}"]`);
         this.product = this.page.locator(`//div[@class="w-full"]//img`);
         this.productTitle = this.page.locator(`//div[@class="w-full"]//h2`);
+        this.productPrice = this.page.locator(`//div[@class="w-full"]//p[contains(@class,"text-xl")]`);
         this.productViewIcon = this.page.locator(`//button[contains(@class,"rounded-lg bg-gray-200")]`);
         this.productsDiv = this.page.locator(`//div[@class="w-full"]/parent::div[contains(@class,"grid")]`);
     }
 
-    async clickFilter(filter: string){
+    async clickFilter(filter: string) {
         await test.step(`Click on Shop by ${filter} filter`, async () => {
             await this.actions.clickDropdown(this.filter(filter), `Shop by ${filter}`);
-        }); 
+        });
     }
 
-    async clickProduct(){
+    async clickProduct() {
         return await test.step(`Click on a product`, async () => {
             const title = await this.productTitle.nth(1).innerText();
             await this.actions.clickOn(this.product.nth(1), `Product: ${title}`);
@@ -36,7 +37,7 @@ class ShopPage extends Common {
         });
     }
 
-    async isGridViewDisplayed(){
+    async isGridViewDisplayed() {
         return await test.step("Verify that products are displayed in Grid view", async () => {
             const classAttribute = await this.productsDiv.getAttribute("class");
 
@@ -49,7 +50,6 @@ class ShopPage extends Common {
             return isGridView;
         });
     }
-
 
     async isListViewDisplayed() {
         return await test.step("Verify that products are displayed in List view", async () => {
@@ -65,14 +65,13 @@ class ShopPage extends Common {
         });
     }
 
-
-    async changeProductView(){
+    async changeProductView() {
         await test.step(`Change product view mode`, async () => {
             await this.actions.clickOn(this.productViewIcon, `List/Grid View Icon`);
         });
     }
 
-    async applyFilter(filter: string, option: string){
+    async applyFilter(filter: string, option: string) {
         await test.step(`Select '${option}' under ${filter} filter`, async () => {
             await this.clickFilter(filter);
             await this.actions.scrollDownToTargetLocator(this.filterOption(option));
@@ -80,7 +79,7 @@ class ShopPage extends Common {
         });
     }
 
-    async verifyAppliedFilter(filter: string, option: string){
+    async verifyAppliedFilter(filter: string, option: string) {
         return await test.step(`Select '${option}' under ${filter} filter`, async () => {
             await this.clickFilter(filter);
             await this.actions.scrollDownToTargetLocator(this.filterOption(option));
@@ -92,11 +91,11 @@ class ShopPage extends Common {
     async verifyMenuIsVisible() {
         return await test.step(`Check that Shop is displayed under page heading`, async () => {
             await this.actions.waitForPageToLoad();
-            return await this.menu.isVisible();        
+            return await this.menu.isVisible();
         });
     }
 
-    async verifyFilterResults(filter: string, option: string): Promise<boolean> {
+    async verifyFilterResults(filter: string, option: string) {
         return await test.step(`Verify that products are of ${filter} '${option}'`, async () => {
             const titleCount = await this.productTitle.count();
 
@@ -109,6 +108,27 @@ class ShopPage extends Common {
             }
             return true;
         });
+    }
+
+    /**
+     * Method to verify the name and price of products displayed
+     * @param {Array} files
+     * @returns true if name and price of product matches
+    */
+    async verifyProductNameAndPrice(products: { [key: string]: string }[]) {
+        let allMatch = true;
+        let index = 0;
+        for (const obj of products) {
+            for (const [key, value] of Object.entries(obj)) {
+                const actualName = await this.productTitle.nth(index).innerText();
+                const actualPrice = await this.productPrice.nth(index).innerText();
+                if (!actualName.includes(key) || !actualPrice.includes(value)) {
+                    allMatch = false;
+                }
+                index++;
+            }
+        }
+        return allMatch;
     }
 }
 export default ShopPage;

@@ -25,7 +25,6 @@ class HomePage extends Common {
         this.newArrivalProduct = this.page.locator(`//div[text()="New Arrivals"]/..//div[@data-index="0"]`);
         this.newArrivalProductTitle = this.page.locator(`//div[text()="New Arrivals"]/..//div[@data-index="0"]//h2`);
         this.cartItemsCount = this.page.locator(`//a[@href="/cart"]//span`);
-        // this.cartLocator = this.page.locator(`//a[@href="/cart"]`);
         this.wishlistItemsCount = this.page.locator(`//a[@href="/wishlist"]//span`);
         this.wishlistIcon = this.page.locator(`//a[@href="/wishlist"]`);
     }
@@ -99,12 +98,9 @@ class HomePage extends Common {
         await test.step(`Click on '${option}' and accept the alert`, async () => {
             this.page.once("dialog", async (dialog) => {
                 const alertMessage = dialog.message();
-                console.log(`Alert Text: ${alertMessage}`);
-
                 expect(alertMessage).toBe(alertText);
                 await dialog.accept();
             });
-
             await this.clickLiTag(option);
         });
     }

@@ -15,7 +15,6 @@ class ComponentsPage extends Common {
         await test.step(`Click on Learn more`, async () => {
             await this.actions.clickOn(this.learnMoreLink(cardTitle), `${cardTitle}`);
         });
-        
     }
 
     async getPageTitle(){

@@ -33,7 +33,7 @@
         "success": "Successful!",
         "orderSucces": "Your order has been placed successfully!",
         "wishlistSuccess": "Product added to wish List",
-        "wishlistError": "Product already in wishlist",
+        "wishlistItemExists": "Product already in wishlist",
         "logoutAlert": "Are you sure you want to log out?",
         "logoutSuccess": "Logout Successful!"
     },
@@ -101,5 +101,19 @@
     "country": {
         "india": "India",
         "us": "US"
-    }
+    },
+    "products": [
+        {"Dell XPS 13": "$1299"},
+        {"MacBook Pro 16": "$2399"},
+        {"HP Spectre x360": "$1499.99"},
+        {"Lenovo ThinkPad X1 Carbon": "$1599"},
+        {"Asus ZenBook 14": "$1099"},
+        {"Microsoft Surface Laptop 4": "$1299"},
+        {"Razer Blade 15": "$1999.99"},
+        {"Acer Predator Helios 300": "$1299"},
+        {"Gigabyte Aero 15 OLED": "$2399"},
+        {"MSI GS66 Stealth": "$1799"},
+        {"iPhone 13 Pro": "$999"},
+        {"Samsung Galaxy S22 Ultra": "$1199.99"}
+    ]
 }
