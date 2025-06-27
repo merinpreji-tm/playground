@@ -24,7 +24,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright Tests
-        run: npx playwright test --grep "@smoke"
+        run: npx playwright test
 
       - name: Upload Playwright HTML Report
         if: always()
