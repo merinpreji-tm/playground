@@ -65,7 +65,7 @@ class HomePage extends Common {
     async getWishlistItemsCount(){
         return await test.step("Get the count of items in the wishlist", async () => {
             const wishlistText = await this.wishlistItemsCount.innerText();
-            return parseInt(wishlistText);
+            return parseInt(wishlistText.trim());
         });
     }
 

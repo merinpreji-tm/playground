@@ -133,6 +133,13 @@ test.describe("Test the Playground web application", async () => {
       const cartItemCountIncreased = await homePage.hasCartCountIncreased(cartItemsCount);
       expect(cartItemCountIncreased, "Number of items in the cart should be increased").toBe(true);
     });
+
+    // Resetting the cart to remove added item in cart
+    await test.step("Click on 'Reset Cart' button", async () => {
+      await common.clickButton(playgroundData.buttons.resetCart);
+      const cartItemCount = await homePage.hasCartCountBecomeZero();
+      expect(cartItemCount, "Number of items in the cart should be zero").toBe(true);
+    });
   });
 
   test("TC08 - Verify if the user can add multiple quantity of the same product to the cart", async ({ common, homePage, productDetailsPage, cartPage }) => {
@@ -166,6 +173,13 @@ test.describe("Test the Playground web application", async () => {
     await test.step(`Verfy that product quantity is increased`, async () => {
       const updatedQuantity = await cartPage.getProductQuantity(newArrivalProductTitle);
       expect(updatedQuantity, `Product quantity should be increased by ${playgroundData.cart.countToIncrease}`).toBe(productQuantity + Number(playgroundData.cart.countToIncrease));
+    });
+
+    // Resetting the cart to remove added item in cart
+    await test.step("Click on 'Reset Cart' button", async () => {
+      await common.clickButton(playgroundData.buttons.resetCart);
+      const cartItemCount = await homePage.hasCartCountBecomeZero();
+      expect(cartItemCount, "Number of items in the cart should be zero").toBe(true);
     });
   });
 
@@ -210,6 +224,13 @@ test.describe("Test the Playground web application", async () => {
     await test.step(`Verfy that product quantity is decreased`, async () => {
       const updatedQuantity = await cartPage.getProductQuantity(newArrivalProductTitle);
       expect(updatedQuantity, `Product quantity should be increased by ${playgroundData.cart.countToDecrease}`).toBe(productQuantity - Number(playgroundData.cart.countToDecrease));
+    });
+
+    // Resetting the cart to remove added item in cart
+    await test.step("Click on 'Reset Cart' button", async () => {
+      await common.clickButton(playgroundData.buttons.resetCart);
+      const cartItemCount = await homePage.hasCartCountBecomeZero();
+      expect(cartItemCount, "Number of items in the cart should be zero").toBe(true);
     });
   });
 
@@ -288,6 +309,13 @@ test.describe("Test the Playground web application", async () => {
       await test.step(`Check that cart contains products '${laptopTitle}' and '${mobileTitle}`, async () => {
         const cartItems = await cartPage.verfyCartItems(laptopTitle, mobileTitle);
         expect(cartItems, `Cart should contain the products '${laptopTitle}' and '${mobileTitle}`).toBe(true);
+      });
+
+      // Resetting the cart to remove added item in cart
+      await test.step("Click on 'Reset Cart' button", async () => {
+        await common.clickButton(playgroundData.buttons.resetCart);
+        const cartItemCount = await homePage.hasCartCountBecomeZero();
+        expect(cartItemCount, "Number of items in the cart should be zero").toBe(true);
       });
     });
   });
@@ -606,20 +634,29 @@ test.describe("Test the Playground web application", async () => {
       });
     });
 
-    await test.step("Click on 'Add to Wishlist' button", async () => {
+    await test.step("Click on 'Add to Wishlist' button and verify the success message displayed", async () => {
       wishlistItemsCount = await homePage.getWishlistItemsCount();
       await common.clickButton(playgroundData.buttons.addToWishlist);
-    });
-
-    await test.step("Verify the auto-disappearing banner content displayed", async () => {
-      const validMessages = [playgroundData.messages.wishlistSuccess, playgroundData.messages.wishlistItemExists];
-      const isValid = await productDetailsPage.verifySuccessMessageIsValid(validMessages);
-      expect(isValid, `Auto-disappearing banner content displayed at the top right side of the page should be '${playgroundData.messages.wishlistSuccess}' or '${playgroundData.messages.wishlistItemExists}'`).toBe(true);
+      const successMessage = await productDetailsPage.getSuccessMessage();
+      expect(successMessage, `Auto-disappearing banner content displayed at the top right side of the page should be '${playgroundData.messages.wishlistSuccess}'`).toBe(playgroundData.messages.wishlistSuccess);
     });
 
     await test.step("Verify that the wishlist shows the number of products added", async () => {
       const wishlistItemCountIncreased = await homePage.hasWishlistCountIncreased(wishlistItemsCount);
       expect(wishlistItemCountIncreased, "Number of items in the wishlist should be increased").toBe(true);
+    });
+
+    // Removing item from wishlist
+    await test.step("Navigate to wishlist", async () => {
+      await homePage.goToWishlist();
+      const pageTitle = await common.getPageTitle();
+      expect(pageTitle, `Page title should be '${playgroundData.titles.wishlist}'`).toBe(playgroundData.titles.wishlist);
+    });
+
+    await test.step("Click on 'Reset Wishlist' button", async () => {
+      await common.clickButton(playgroundData.buttons.resetWishlist);
+      const wishlistItemCount = await homePage.hasWishlistCountBecomeZero();
+      expect(wishlistItemCount, "Number of items in the wishlist should be zero").toBe(true);
     });
   });
 
@@ -648,15 +685,11 @@ test.describe("Test the Playground web application", async () => {
       });
     });
 
-    await test.step("Click on 'Add to Wishlist' button", async () => {
+    await test.step("Click on 'Add to Wishlist' button and verify the success message displayed", async () => {
       wishlistItemsCount = await homePage.getWishlistItemsCount();
       await common.clickButton(playgroundData.buttons.addToWishlist);
-    });
-
-    await test.step("Verify the auto-disappearing banner content displayed", async () => {
-      const validMessages = [playgroundData.messages.wishlistSuccess, playgroundData.messages.wishlistItemExists];
-      const isValid = await productDetailsPage.verifySuccessMessageIsValid(validMessages);
-      expect(isValid, `Auto-disappearing banner content displayed at the top right side of the page should be '${playgroundData.messages.wishlistSuccess}' or '${playgroundData.messages.wishlistItemExists}'`).toBe(true);
+      const successMessage = await productDetailsPage.getSuccessMessage();
+      expect(successMessage, `Auto-disappearing banner content displayed at the top right side of the page should be '${playgroundData.messages.wishlistSuccess}'`).toBe(playgroundData.messages.wishlistSuccess);
     });
 
     await test.step("Verify that the wishlist shows the number of products added", async () => {
@@ -674,6 +707,13 @@ test.describe("Test the Playground web application", async () => {
       await common.clickButton(playgroundData.buttons.addToCart);
       const cartItemCountIncreased = await homePage.hasCartCountIncreased(cartItemsCount);
       expect(cartItemCountIncreased, "Number of items in the cart should be increased").toBe(true);
+    });
+
+    // Removing item from wishlist
+    await test.step("Click on 'Reset Wishlist' button", async () => {
+      await common.clickButton(playgroundData.buttons.resetWishlist);
+      const wishlistItemCount = await homePage.hasWishlistCountBecomeZero();
+      expect(wishlistItemCount, "Number of items in the wishlist should be zero").toBe(true);
     });
   });
 
@@ -702,15 +742,11 @@ test.describe("Test the Playground web application", async () => {
       });
     });
 
-    await test.step("Click on 'Add to Wishlist' button", async () => {
+    await test.step("Click on 'Add to Wishlist' button and verify the success message displayed", async () => {
       wishlistItemsCount = await homePage.getWishlistItemsCount();
       await common.clickButton(playgroundData.buttons.addToWishlist);
-    });
-
-    await test.step("Verify the auto-disappearing banner content displayed", async () => {
-      const validMessages = [playgroundData.messages.wishlistSuccess, playgroundData.messages.wishlistItemExists];
-      const isValid = await productDetailsPage.verifySuccessMessageIsValid(validMessages);
-      expect(isValid, `Auto-disappearing banner content displayed at the top right side of the page should be '${playgroundData.messages.wishlistSuccess}' or '${playgroundData.messages.wishlistItemExists}'`).toBe(true);
+      const successMessage = await productDetailsPage.getSuccessMessage();
+      expect(successMessage, `Auto-disappearing banner content displayed at the top right side of the page should be '${playgroundData.messages.wishlistSuccess}'`).toBe(playgroundData.messages.wishlistSuccess);
     });
 
     await test.step("Verify that the wishlist shows the number of products added", async () => {

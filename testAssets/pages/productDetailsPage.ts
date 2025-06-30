@@ -24,13 +24,5 @@ class ProductDetailsPage extends Common {
             return successMessage;
         });
     }
-
-    async verifySuccessMessageIsValid(messages: string[]) {
-        return await test.step("Verify that the auto-disappearing success message after adding a product to wishlist is valid", async () => {
-            const successMessage = await this.successMessage.innerText();
-            const isValid = messages.includes(successMessage);
-            return isValid;
-        });
-    }
 }
 export default ProductDetailsPage;

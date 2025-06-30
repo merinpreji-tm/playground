@@ -95,6 +95,12 @@ class ShopPage extends Common {
         });
     }
 
+    /**
+     * Method to verify the products are displayed according to applied filter
+     * @param {string} filter
+     * @param {string} option
+     * @returns true if tite of the product contains the selected filter option
+    */
     async verifyFilterResults(filter: string, option: string) {
         return await test.step(`Verify that products are of ${filter} '${option}'`, async () => {
             const titleCount = await this.productTitle.count();
