@@ -1,8 +1,6 @@
-name: Playwright Tests
-
+name: Playground test cases
 on:
-  push:
-    branches: [merin]
+  workflow_dispatch:
 
 jobs:
   test:
