@@ -1,6 +1,14 @@
 name: Playwright Automation
+
 on:
   workflow_dispatch:
+    inputs:
+      username:
+        description: 'Enter Username'
+        required: true
+      password:
+        description: 'Enter Password'
+        required: true
 
 jobs:
   test:
